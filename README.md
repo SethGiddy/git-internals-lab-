@@ -189,6 +189,65 @@ Understanding Git's internals means you can:
 
 ---
 
+## 🌿 Branching Strategies That Teams Actually Use
+
+Once you understand how branches work, the next big question is: how should a team organise them? GitFlow is one classic approach. It gives you a clear structure with:
+
+- 🌐 **main** for production-ready code
+- 🧪 **develop** for the integration branch where features come together
+- ✨ **feature/** branches for new work
+- 🚀 **release/** branches for polishing before shipping
+- 🔥 **hotfix/** branches for urgent fixes
+
+That setup helps protect production from half-finished work. It's especially useful when releases happen on a planned schedule.
+
+Not every team uses GitFlow, though. Many modern teams prefer **trunk-based development**, where people integrate into main frequently and use **feature flags** to hide unfinished work until it's ready. In short:
+
+- **GitFlow**: long-lived branches, planned releases, great for slower release cycles
+- **Trunk-based**: short-lived branches, frequent integration, great for fast-moving teams
+- **Feature flags**: let you deploy safely without exposing unfinished features
+
+The best strategy is the one that matches your team's release rhythm. Simplicity usually wins.
+
+---
+
+## ⚠️ Merge Conflicts: When Git Needs a Human Decision
+
+Sometimes two people change the same part of a file at the same time. When that happens, Git cannot safely guess which version should win, so it pauses and asks for help. That moment is called a **merge conflict**.
+
+A conflict usually looks messy at first, with Git adding markers like:
+
+```text
+<<<<<<< HEAD
+your version
+=======
+developer's version
+>>>>>>> branch-name
+```
+
+The job is not to panic. You review both versions, keep the right changes, remove the conflict markers, and then finish the merge. It's one of the most important collaboration skills in Git, because it forces you to think carefully about what belongs in the final version.
+
+A simple example looks like this:
+
+```bash
+git checkout main
+echo 'main line' > conflict.txt && git add . && git commit -m 'main: add line'
+
+git checkout develop
+echo 'develop line' > conflict.txt && git add . && git commit -m 'develop: add line'
+
+git merge main
+```
+
+Once the conflict appears, you resolve the file, stage it, and complete the merge:
+
+```bash
+git add conflict.txt
+git commit -m 'merge: resolve conflict between main and develop'
+```
+
+---
+
 ## 🚀 Next Steps
 
 Start small, run these commands, peek around, and you'll develop a sixth sense for how Git actually works.
